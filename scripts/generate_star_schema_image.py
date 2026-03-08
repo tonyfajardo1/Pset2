@@ -1,29 +1,33 @@
 from PIL import Image, ImageDraw, ImageFont
 
 
-W, H = 1400, 820
-BG = (40, 42, 46)
-BOX = (54, 57, 63)
-BORDER = (170, 170, 170)
-TEXT = (235, 235, 235)
-LINE = (160, 160, 160)
+W, H = 1500, 900
+BG = (38, 41, 48)
+BOX = (57, 62, 70)
+BORDER = (176, 180, 188)
+TEXT = (235, 237, 240)
+LINE = (173, 178, 186)
 
 
-def draw_box(draw, x, y, w, h, label, font, title=False):
-    draw.rectangle((x, y, x + w, y + h), fill=BOX, outline=BORDER, width=2)
-    if title:
-        draw.text((x + 20, y + 16), label, fill=TEXT, font=font)
-    else:
-        draw.text((x + 16, y + 18), label, fill=TEXT, font=font)
+def draw_box(draw, rect, label, font):
+    x1, y1, x2, y2 = rect
+    draw.rectangle(rect, fill=BOX, outline=BORDER, width=3)
+    draw.text((x1 + 16, y1 + 16), label, fill=TEXT, font=font)
+
+
+def h_connector(draw, x1, y1, x2, y2, mid_x):
+    draw.line((x1, y1, mid_x, y1), fill=LINE, width=3)
+    draw.line((mid_x, y1, mid_x, y2), fill=LINE, width=3)
+    draw.line((mid_x, y2, x2, y2), fill=LINE, width=3)
 
 
 img = Image.new("RGB", (W, H), BG)
 draw = ImageDraw.Draw(img)
 
 try:
-    title_font = ImageFont.truetype("arial.ttf", 32)
-    box_font = ImageFont.truetype("arial.ttf", 22)
-    small_font = ImageFont.truetype("arial.ttf", 18)
+    title_font = ImageFont.truetype("arial.ttf", 40)
+    box_font = ImageFont.truetype("arial.ttf", 24)
+    small_font = ImageFont.truetype("arial.ttf", 20)
 except Exception:
     title_font = ImageFont.load_default()
     box_font = ImageFont.load_default()
@@ -31,43 +35,51 @@ except Exception:
 
 draw.text((24, 20), "Esquema de estrella - Gold (NYC Trips)", fill=TEXT, font=title_font)
 
-# Center fact box
-fx, fy, fw, fh = 520, 300, 360, 190
-draw_box(draw, fx, fy, fw, fh, "Tabla de hechos: gold.fct_trips", box_font, title=True)
-draw.text((fx + 20, fy + 66), "pickup_date_key, pu_zone_key, do_zone_key", fill=TEXT, font=small_font)
-draw.text((fx + 20, fy + 94), "service_type, payment_type_id", fill=TEXT, font=small_font)
-draw.text((fx + 20, fy + 122), "vendor_id, ratecode_id, medidas", fill=TEXT, font=small_font)
+# Boxes
+fact = (560, 325, 965, 560)
+dim_date = (110, 150, 430, 270)
+dim_pu = (110, 335, 430, 455)
+dim_do = (110, 520, 430, 640)
+dim_service = (1070, 120, 1410, 230)
+dim_payment = (1070, 265, 1410, 375)
+dim_vendor = (1070, 410, 1410, 520)
+dim_rate = (1070, 555, 1410, 665)
 
-# Dimension boxes
-draw_box(draw, 110, 160, 300, 110, "Dim: gold.dim_date", box_font)
-draw_box(draw, 110, 300, 300, 110, "Dim: gold.dim_zone (PU)", box_font)
-draw_box(draw, 110, 440, 300, 110, "Dim: gold.dim_zone (DO)", box_font)
+draw_box(draw, fact, "Tabla de hechos: gold.fct_trips", box_font)
+draw.text((580, 390), "pickup_date_key, pu_zone_key, do_zone_key", fill=TEXT, font=small_font)
+draw.text((580, 425), "service_type, payment_type_id", fill=TEXT, font=small_font)
+draw.text((580, 460), "vendor_id, ratecode_id, metricas", fill=TEXT, font=small_font)
 
-draw_box(draw, 990, 120, 300, 105, "Dim: gold.dim_service_type", box_font)
-draw_box(draw, 990, 245, 300, 105, "Dim: gold.dim_payment_type", box_font)
-draw_box(draw, 990, 370, 300, 105, "Dim: gold.dim_vendor", box_font)
-draw_box(draw, 990, 495, 300, 105, "Dim: gold.dim_rate_code", box_font)
+draw_box(draw, dim_date, "Dim: gold.dim_date", box_font)
+draw_box(draw, dim_pu, "Dim: gold.dim_zone (PU)", box_font)
+draw_box(draw, dim_do, "Dim: gold.dim_zone (DO)", box_font)
+draw_box(draw, dim_service, "Dim: gold.dim_service_type", box_font)
+draw_box(draw, dim_payment, "Dim: gold.dim_payment_type", box_font)
+draw_box(draw, dim_vendor, "Dim: gold.dim_vendor", box_font)
+draw_box(draw, dim_rate, "Dim: gold.dim_rate_code", box_font)
 
-# Left connectors
-draw.line((410, 215, 520, 335), fill=LINE, width=3)
-draw.line((410, 355, 520, 365), fill=LINE, width=3)
-draw.line((410, 495, 520, 395), fill=LINE, width=3)
+# Connectors (left)
+mid_left = 500
+h_connector(draw, dim_date[2], (dim_date[1] + dim_date[3]) // 2, fact[0], 375, mid_left)
+h_connector(draw, dim_pu[2], (dim_pu[1] + dim_pu[3]) // 2, fact[0], 430, mid_left)
+h_connector(draw, dim_do[2], (dim_do[1] + dim_do[3]) // 2, fact[0], 485, mid_left)
 
-# Right connectors
-draw.line((880, 335, 990, 170), fill=LINE, width=3)
-draw.line((880, 365, 990, 295), fill=LINE, width=3)
-draw.line((880, 395, 990, 420), fill=LINE, width=3)
-draw.line((880, 425, 990, 545), fill=LINE, width=3)
+# Connectors (right)
+mid_right = 1020
+h_connector(draw, fact[2], 375, dim_service[0], (dim_service[1] + dim_service[3]) // 2, mid_right)
+h_connector(draw, fact[2], 430, dim_payment[0], (dim_payment[1] + dim_payment[3]) // 2, mid_right)
+h_connector(draw, fact[2], 485, dim_vendor[0], (dim_vendor[1] + dim_vendor[3]) // 2, mid_right)
+h_connector(draw, fact[2], 540, dim_rate[0], (dim_rate[1] + dim_rate[3]) // 2, mid_right)
 
-# Labels on connectors
-draw.text((430, 250), "pickup_date_key", fill=TEXT, font=small_font)
-draw.text((430, 350), "pu_zone_key", fill=TEXT, font=small_font)
-draw.text((430, 470), "do_zone_key", fill=TEXT, font=small_font)
-draw.text((900, 225), "service_type", fill=TEXT, font=small_font)
-draw.text((900, 315), "payment_type_id", fill=TEXT, font=small_font)
-draw.text((900, 430), "vendor_id", fill=TEXT, font=small_font)
-draw.text((900, 535), "ratecode_id", fill=TEXT, font=small_font)
+# Labels on lines
+draw.text((438, 350), "pickup_date_key", fill=TEXT, font=small_font)
+draw.text((450, 405), "pu_zone_key", fill=TEXT, font=small_font)
+draw.text((450, 515), "do_zone_key", fill=TEXT, font=small_font)
+draw.text((970, 340), "service_type", fill=TEXT, font=small_font)
+draw.text((970, 430), "payment_type_id", fill=TEXT, font=small_font)
+draw.text((970, 490), "vendor_id", fill=TEXT, font=small_font)
+draw.text((970, 575), "ratecode_id", fill=TEXT, font=small_font)
 
-out = r"F:/Deber2/Evidencias/Esquema Estrella Gold.png"
+out = r"F:/Deber2/Evidencias/Esquema Estrella Gold v2.png"
 img.save(out)
 print(out)
