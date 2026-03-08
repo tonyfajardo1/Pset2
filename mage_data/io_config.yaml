@@ -1,0 +1,6 @@
+POSTGRES_CONNECT_TIMEOUT: 10
+POSTGRES_DBNAME: "{{ env_var('POSTGRES_DB', 'nyc_trips') }}"
+POSTGRES_HOST: "{{ env_var('POSTGRES_HOST', 'postgres') }}"
+POSTGRES_PASSWORD: "{{ env_var('POSTGRES_PASSWORD', '') }}"
+POSTGRES_PORT: "{{ env_var('POSTGRES_PORT', 5432) }}"
+POSTGRES_USER: "{{ env_var('POSTGRES_USER', 'postgres') }}"

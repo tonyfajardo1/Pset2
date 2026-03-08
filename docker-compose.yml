@@ -1,0 +1,78 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:15
+    container_name: nyc_postgres
+    environment:
+      POSTGRES_DB: nyc_trips
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      # Configuraciones de rendimiento
+      POSTGRES_INITDB_ARGS: "--data-checksums"
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    command:
+      - "postgres"
+      - "-c"
+      - "shared_buffers=512MB"
+      - "-c"
+      - "work_mem=256MB"
+      - "-c"
+      - "maintenance_work_mem=512MB"
+      - "-c"
+      - "effective_cache_size=1GB"
+      - "-c"
+      - "checkpoint_completion_target=0.9"
+      - "-c"
+      - "wal_buffers=16MB"
+      - "-c"
+      - "synchronous_commit=off"
+    deploy:
+      resources:
+        limits:
+          memory: 4G
+        reservations:
+          memory: 2G
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: nyc_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+    ports:
+      - "5050:80"
+    depends_on:
+      - postgres
+    volumes:
+      - ./pgadmin_data:/var/lib/pgadmin
+
+  mage:
+    image: mageai/mageai:latest
+    container_name: nyc_mage
+    command: mage start nyc_trips_pipeline
+    env_file:
+      - .env
+    ports:
+      - "6789:6789"
+    volumes:
+      - ./mage_data:/home/src
+      - ./raw_data:/home/src/raw_data
+      - ./dbt_project:/home/src/dbt_project
+    depends_on:
+      postgres:
+        condition: service_healthy
+    deploy:
+      resources:
+        limits:
+          memory: 16G
+        reservations:
+          memory: 8G

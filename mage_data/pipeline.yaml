@@ -1,0 +1,12 @@
+default_config:
+  executor_type: python
+  raw_sql:
+    config: {}
+  streaming:
+    config: {}
+  transformer_type: python
+  data_integration_type: python
+
+pipelines:
+  - name: nyc_trips_pipeline
+    uuid: nyc_trips_pipeline_001

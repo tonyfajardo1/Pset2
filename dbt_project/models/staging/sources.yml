@@ -1,0 +1,84 @@
+version: 2
+
+sources:
+  - name: bronze
+    database: nyc_trips
+    schema: bronze
+    description: "Capa Bronze - Datos crudos de NYC TLC Trip Data"
+    tables:
+      - name: yellow_trips
+        description: "Viajes de taxis amarillos (raw)"
+        columns:
+          - name: vendor_id
+            description: "ID del proveedor de tecnologia TPEP"
+          - name: pickup_datetime
+            description: "Fecha y hora de inicio del viaje"
+          - name: dropoff_datetime
+            description: "Fecha y hora de fin del viaje"
+          - name: passenger_count
+            description: "Numero de pasajeros"
+          - name: trip_distance
+            description: "Distancia del viaje en millas"
+          - name: pu_location_id
+            description: "ID de zona de recogida (TLC Taxi Zone)"
+          - name: do_location_id
+            description: "ID de zona de destino (TLC Taxi Zone)"
+          - name: payment_type
+            description: "Tipo de pago"
+          - name: fare_amount
+            description: "Tarifa base del viaje"
+          - name: total_amount
+            description: "Monto total cobrado"
+          - name: service_type
+            description: "Tipo de servicio (yellow)"
+          - name: source_month
+            description: "Mes fuente del archivo (YYYY-MM)"
+          - name: ingest_ts
+            description: "Timestamp de ingesta"
+
+      - name: green_trips
+        description: "Viajes de taxis verdes (raw)"
+        columns:
+          - name: vendor_id
+            description: "ID del proveedor de tecnologia LPEP"
+          - name: pickup_datetime
+            description: "Fecha y hora de inicio del viaje"
+          - name: dropoff_datetime
+            description: "Fecha y hora de fin del viaje"
+          - name: passenger_count
+            description: "Numero de pasajeros"
+          - name: trip_distance
+            description: "Distancia del viaje en millas"
+          - name: pu_location_id
+            description: "ID de zona de recogida (TLC Taxi Zone)"
+          - name: do_location_id
+            description: "ID de zona de destino (TLC Taxi Zone)"
+          - name: payment_type
+            description: "Tipo de pago"
+          - name: fare_amount
+            description: "Tarifa base del viaje"
+          - name: total_amount
+            description: "Monto total cobrado"
+          - name: service_type
+            description: "Tipo de servicio (green)"
+          - name: source_month
+            description: "Mes fuente del archivo (YYYY-MM)"
+          - name: ingest_ts
+            description: "Timestamp de ingesta"
+
+      - name: coverage
+        description: "Tabla de cobertura de datos cargados"
+
+      - name: taxi_zone_lookup
+        description: "Dataset complementario obligatorio - Mapeo de zonas TLC"
+        columns:
+          - name: LocationID
+            description: "ID de zona TLC"
+          - name: Borough
+            description: "Borough o region"
+          - name: Zone
+            description: "Nombre de la zona"
+          - name: service_zone
+            description: "Tipo de zona de servicio"
+          - name: ingest_ts
+            description: "Timestamp de ingesta"

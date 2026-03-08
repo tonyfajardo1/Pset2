@@ -1,0 +1,72 @@
+version: 2
+
+models:
+  - name: fct_trips
+    description: "Fact table principal (1 fila = 1 viaje)"
+    columns:
+      - name: trip_key
+        data_tests:
+          - not_null
+          - unique
+      - name: pickup_date_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_date')
+              field: date_key
+      - name: pu_zone_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_zone')
+              field: zone_key
+      - name: do_zone_key
+        data_tests:
+          - not_null
+          - relationships:
+              to: ref('dim_zone')
+              field: zone_key
+      - name: service_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['yellow', 'green']
+
+  - name: dim_zone
+    description: "Dimension de zonas TLC"
+    columns:
+      - name: zone_key
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_date
+    description: "Dimension de fechas"
+    columns:
+      - name: date_key
+        data_tests:
+          - not_null
+          - unique
+
+  - name: dim_service_type
+    description: "Dimension de tipos de servicio"
+    columns:
+      - name: service_type
+        data_tests:
+          - not_null
+          - unique
+          - accepted_values:
+              values: ['yellow', 'green']
+
+  - name: dim_payment_type
+    description: "Dimension de tipos de pago"
+    columns:
+      - name: payment_type_id
+        data_tests:
+          - not_null
+          - unique
+      - name: payment_type
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['card', 'cash', 'other']

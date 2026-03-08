@@ -1,0 +1,26 @@
+# Trigger: dbt_after_ingest
+# Event trigger que se dispara cuando ingest_bronze termina exitosamente
+# Segun PDF: Ejecuta dbt_build_silver -> dbt_build_gold -> quality_checks
+
+name: dbt_after_ingest
+trigger_type: event
+status: inactive
+pipeline_uuid: dbt_after_ingest
+
+# Configuracion del event trigger
+event_type: pipeline_run_completed
+event_pipeline_uuid: ingest_bronze
+
+# Solo ejecutar si el pipeline padre fue exitoso
+event_conditions:
+  status: completed
+
+settings:
+  allow_blocks_to_fail: false
+
+description: |
+  Event trigger que se dispara cuando ingest_bronze termina exitosamente.
+  Ejecuta en orden:
+    1. dbt_build_silver (crea vistas en silver schema)
+    2. dbt_build_gold (crea tablas en gold schema)
+    3. quality_checks (ejecuta dbt test)

@@ -1,0 +1,12 @@
+nyc_trips:
+  outputs:
+    dev:
+      dbname: nyc_trips
+      host: postgres
+      password: postgres
+      port: 5432
+      schema: public
+      threads: 4
+      type: postgres
+      user: postgres
+  target: dev

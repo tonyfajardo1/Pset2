@@ -1,0 +1,19 @@
+# Trigger: quality_after_gold
+# Event trigger que se dispara cuando dbt_build_gold termina exitosamente
+
+name: quality_after_gold
+trigger_type: event
+status: active
+pipeline_uuid: quality_checks
+
+event_type: pipeline_run_completed
+event_pipeline_uuid: dbt_build_gold
+
+event_conditions:
+  status: completed
+
+settings:
+  allow_blocks_to_fail: false
+
+description: |
+  Event trigger que ejecuta quality_checks al finalizar dbt_build_gold.

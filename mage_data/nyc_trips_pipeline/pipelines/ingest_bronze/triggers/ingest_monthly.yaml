@@ -1,0 +1,28 @@
+# Trigger: ingest_monthly
+# Ejecuta ingest_bronze con frecuencia semanal
+# Segun PDF: Schedule trigger - diario o semanal
+
+name: ingest_monthly
+trigger_type: schedule
+status: active
+pipeline_uuid: ingest_bronze
+
+# Configuracion del schedule (cron expression)
+# Ejecuta cada lunes a las 2:00 AM
+schedule_type: custom
+schedule_interval: "@weekly"
+
+# Variables del trigger
+variables:
+  service_types:
+    - yellow
+    - green
+
+settings:
+  allow_blocks_to_fail: false
+  skip_if_previous_running: true
+
+description: |
+  Schedule trigger que ejecuta la ingesta de datos Bronze semanalmente.
+  Procesa Yellow y Green trips de NYC TLC.
+  Configurado para ejecutar cada lunes a las 2:00 AM.

@@ -1,0 +1,48 @@
+blocks:
+- all_upstream_blocks_executed: true
+  color: purple
+  configuration: {}
+  downstream_blocks: []
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: python
+  name: dbt_pipeline_chain
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: custom
+  upstream_blocks: []
+  uuid: dbt_pipeline_chain
+cache_block_output_in_memory: false
+callbacks: []
+concurrency_config: {}
+conditionals: []
+created_at: '2026-02-26 06:00:00.000000+00:00'
+data_integration: null
+description: 'Pipeline que encadena: dbt_build_silver -> dbt_build_gold -> quality_checks.
+  Se ejecuta después de ingest_bronze.'
+executor_config: {}
+executor_count: 1
+executor_type: null
+extensions: {}
+name: dbt_after_ingest
+notification_config: {}
+remote_variables_dir: null
+retry_config: {}
+run_pipeline_in_one_process: false
+settings:
+  triggers:
+    dbt_after_ingest:
+      description: "Event trigger - ejecuta dbt_build_silver, dbt_build_gold, quality_checks después de ingest_bronze"
+      pipeline_uuid: "dbt_after_ingest"
+      status: "active"
+spark_config: {}
+tags:
+- dbt
+- chain
+- after_ingest
+type: python
+uuid: dbt_after_ingest
+variables_dir: /home/src/mage_data/nyc_trips_pipeline
+widgets: []

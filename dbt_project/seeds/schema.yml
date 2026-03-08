@@ -1,0 +1,17 @@
+version: 2
+
+seeds:
+  - name: taxi_zones
+    description: "Lookup table de zonas de taxi de NYC TLC"
+    columns:
+      - name: LocationID
+        description: "ID unico de la zona (1-265)"
+        tests:
+          - unique
+          - not_null
+      - name: Borough
+        description: "Borough de NYC (Manhattan, Brooklyn, Queens, Bronx, Staten Island, EWR)"
+      - name: Zone
+        description: "Nombre de la zona"
+      - name: service_zone
+        description: "Tipo de zona de servicio"

@@ -1,0 +1,49 @@
+# Environment variables (NUNCA subir al repo)
+.env
+*.env.local
+
+# PostgreSQL data
+postgres_data/
+
+# pgAdmin data
+pgadmin_data/
+
+# Raw data (muy grande para git)
+raw_data/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# dbt
+dbt_project/target/
+dbt_project/dbt_packages/
+dbt_project/logs/
+
+# Mage
+mage_data/.file_versions/
+mage_data/.variables/
+mage_data/.logs/
+mage_data/secrets/
+mage_data/mage_data/
+mage_data/nyc_trips_pipeline/dbt_project/target/
+mage_data/nyc_trips_pipeline/dbt_project/logs/
+
+# Local assistant/tooling files
+.claude/
+pdf_content.json
+pdf_output.txt
+yellow_tripdata_2024-01.csv
+
+# Logs
+*.log
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

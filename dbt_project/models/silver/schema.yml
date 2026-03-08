@@ -1,0 +1,73 @@
+version: 2
+
+models:
+  - name: silver_yellow_trips
+    description: "Viajes de taxis amarillos - limpiados y enriquecidos con zonas"
+    columns:
+      - name: pickup_datetime
+        description: "Fecha/hora de inicio del viaje"
+        data_tests:
+          - not_null
+      - name: dropoff_datetime
+        description: "Fecha/hora de fin del viaje"
+        data_tests:
+          - not_null
+      - name: trip_distance
+        description: "Distancia en millas"
+        data_tests:
+          - not_null
+      - name: pu_location_id
+        description: "ID zona de pickup (1-265)"
+        data_tests:
+          - not_null
+      - name: do_location_id
+        description: "ID zona de dropoff (1-265)"
+        data_tests:
+          - not_null
+      - name: total_amount
+        description: "Monto total del viaje"
+      - name: service_type
+        description: "Tipo de servicio"
+        data_tests:
+          - accepted_values:
+              values: ['yellow']
+      - name: pu_borough
+        description: "Borough de pickup (enriquecido)"
+      - name: do_borough
+        description: "Borough de dropoff (enriquecido)"
+
+  - name: silver_green_trips
+    description: "Viajes de taxis verdes - limpiados y enriquecidos con zonas"
+    columns:
+      - name: pickup_datetime
+        data_tests:
+          - not_null
+      - name: dropoff_datetime
+        data_tests:
+          - not_null
+      - name: trip_distance
+        data_tests:
+          - not_null
+      - name: pu_location_id
+        data_tests:
+          - not_null
+      - name: do_location_id
+        data_tests:
+          - not_null
+      - name: service_type
+        data_tests:
+          - accepted_values:
+              values: ['green']
+
+  - name: silver_trips_unified
+    description: "Vista unificada de todos los viajes (yellow + green)"
+    columns:
+      - name: pickup_datetime
+        data_tests:
+          - not_null
+      - name: service_type
+        description: "Tipo de servicio (yellow o green)"
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['yellow', 'green']

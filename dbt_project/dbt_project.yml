@@ -1,0 +1,33 @@
+name: 'nyc_trips_dbt'
+version: '1.0.0'
+config-version: 2
+
+profile: 'nyc_trips'
+
+model-paths: ["models"]
+analysis-paths: ["analyses"]
+test-paths: ["tests"]
+seed-paths: ["seeds"]
+macro-paths: ["macros"]
+snapshot-paths: ["snapshots"]
+
+target-path: "target"
+clean-targets:
+  - "target"
+  - "dbt_packages"
+
+models:
+  nyc_trips_dbt:
+    staging:
+      +materialized: ephemeral
+    silver:
+      +schema: silver
+      +materialized: view
+    gold:
+      +schema: gold
+      +materialized: table
+
+# Generar schema sin prefijo
+dispatch:
+  - macro_namespace: dbt
+    search_order: ['nyc_trips_dbt', 'dbt']
