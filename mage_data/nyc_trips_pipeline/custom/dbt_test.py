@@ -25,8 +25,10 @@ def run_quality_checks(*args, **kwargs):
     env['POSTGRES_HOST'] = get_secret_value('POSTGRES_HOST') or 'postgres'
     env['POSTGRES_PORT'] = get_secret_value('POSTGRES_PORT') or '5432'
     env['POSTGRES_DB'] = get_secret_value('POSTGRES_DB') or 'nyc_trips'
-    env['POSTGRES_USER'] = get_secret_value('POSTGRES_USER') or 'postgres'
-    env['POSTGRES_PASSWORD'] = get_secret_value('POSTGRES_PASSWORD') or 'postgres'
+    env['POSTGRES_USER'] = get_secret_value('POSTGRES_USER') or os.getenv('POSTGRES_USER', '')
+    env['POSTGRES_PASSWORD'] = get_secret_value('POSTGRES_PASSWORD') or os.getenv('POSTGRES_PASSWORD', '')
+    if not env['POSTGRES_USER'] or not env['POSTGRES_PASSWORD']:
+        raise ValueError('POSTGRES_USER y POSTGRES_PASSWORD deben venir de Mage Secrets o variables de entorno.')
 
     print("=" * 60)
     print("DBT TEST - QUALITY CHECKS")

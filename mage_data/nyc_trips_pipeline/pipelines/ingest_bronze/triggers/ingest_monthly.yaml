@@ -1,14 +1,11 @@
-# Trigger: ingest_monthly
-# Ejecuta ingest_bronze con frecuencia semanal
-# Segun PDF: Schedule trigger - diario o semanal
+# Trigger: magnificent illusion
+# Trigger de ingesta (nombre segun evidencias)
 
-name: ingest_monthly
+name: magnificent illusion
 trigger_type: schedule
 status: active
 pipeline_uuid: ingest_bronze
 
-# Configuracion del schedule (cron expression)
-# Ejecuta cada lunes a las 2:00 AM
 schedule_type: custom
 schedule_interval: "@weekly"
 
@@ -23,6 +20,4 @@ settings:
   skip_if_previous_running: true
 
 description: |
-  Schedule trigger que ejecuta la ingesta de datos Bronze semanalmente.
-  Procesa Yellow y Green trips de NYC TLC.
-  Configurado para ejecutar cada lunes a las 2:00 AM.
+  Trigger de ingest_bronze restaurado con el nombre de las evidencias.

@@ -57,6 +57,9 @@ WITH trips AS (
         ingest_ts
 
     FROM {{ ref('silver_trips_unified') }}
+    WHERE pickup_date IS NOT NULL
+      AND pickup_date >= '2022-01-01'
+      AND pickup_date < '2026-01-01'
 )
 
 SELECT * FROM trips

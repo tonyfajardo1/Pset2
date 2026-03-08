@@ -42,6 +42,7 @@ PostgreSQL gold schema (tables, star schema)
   - dim_payment_type (LIST)
   - dim_date
   - dim_vendor
+  - dim_rate_code
         |
         v
 Mage quality_checks -> dbt test
@@ -90,13 +91,20 @@ Servicios esperados:
 
 ## 5. Triggers y que disparan
 
-- `ingest_monthly` (schedule trigger, `@weekly`): ejecuta `ingest_bronze`.
-- `dbt_after_ingest` (schedule/API trigger): ejecuta la cadena `dbt_build_silver -> dbt_build_gold -> quality_checks`.
+- Trigger de `ingest_bronze` (schedule `@weekly`): ejecuta la ingesta Bronze.
+- Trigger de `dbt_after_ingest` (schedule `@weekly`): ejecuta la cadena `dbt_build_silver -> dbt_build_gold -> quality_checks`.
+
+Resultado observado:
+
+- Ambos triggers aparecen activos en Mage UI con frecuencia semanal.
+- La ejecucion de `dbt_after_ingest` completa la cadena de 3 pipelines sin errores.
 
 Evidencias:
 
 - `Evidencias/Ingest Bronze Pipelines.png`
 - `Evidencias/DBT After Ingest.png`
+- `Evidencias/Trigger ingest monthly.png`
+- `Evidencias/Trigger dbt after ingest.png`
 
 ## 6. Gestion de secretos
 
@@ -113,6 +121,8 @@ Notas:
 - `.env` no se versiona.
 - `.env.example` si se versiona.
 - No se guardan valores de secretos en el repo.
+- Los pipelines toman primero valores de Mage Secrets y, si no existen, usan variables de entorno.
+- No hay password hardcodeado en codigo (`POSTGRES_PASSWORD` requerido via secret/env).
 
 ## 7. Particionamiento
 
@@ -133,6 +143,13 @@ Debe observarse:
 - `gold.dim_zone` -> `Partition key: HASH (zone_key)`
 - `gold.dim_service_type` -> `Partition key: LIST (service_type)`
 - `gold.dim_payment_type` -> `Partition key: LIST (payment_type)`
+
+Nota de evidencia:
+
+- En este proyecto se incluyeron capturas con consultas de catalogo en pgAdmin que muestran la misma evidencia de `\d+` (estrategia, key y particiones hijas):
+  - `Evidencias/Partition Strategy Gold.png`
+  - `Evidencias/Partition Keys Gold.png`
+  - `Evidencias/Partition Children Gold.png`
 
 ### 7.2 Evidencias con EXPLAIN (ANALYZE, BUFFERS)
 
@@ -160,6 +177,11 @@ Interpretacion esperada (2-4 lineas):
 - En la consulta de zona, el planner dirige la busqueda a la particion hash correspondiente al `zone_key`.
 - Esto reduce bloques leidos y evita escaneo completo de particiones no relevantes.
 
+Resultado observado:
+
+- `fct_trips` se resuelve sobre la particion mensual `fct_trips_2024_03`.
+- `dim_zone` se resuelve sobre una particion hash especifica (`dim_zone_p3` en la evidencia).
+
 ## 8. dbt: materializations y logs
 
 Materializaciones:
@@ -184,6 +206,11 @@ Resultado final de calidad (evidencia real):
 Captura:
 
 - `Evidencias/DBT Test Final PASS.png`
+
+Resultado observado:
+
+- Suite completa ejecutada: `TOTAL=44`.
+- Calidad final: `PASS=44`, `WARN=0`, `ERROR=0`, `SKIP=0`.
 
 ## 9. Troubleshooting
 
@@ -215,8 +242,9 @@ Captura:
 
 ## 11. Documentos de apoyo
 
-- Plan previo a validacion (pasos 1-3): `PLAN_PRE_VALIDACION_PASOS_1_2_3.md`
-- Script de consultas para evidencias: `SQL_EVIDENCIAS_PSET2.sql`
+- Notebook final de analisis (raiz): `data_analysis_20_questions.ipynb`
+- Notebook del pipeline Mage: `mage_data/nyc_trips_pipeline/data_analysis_20_questions.ipynb`
+- Scripts auxiliares de revision/ajuste del notebook: `scripts/`
 
 ## 12. Inventario de evidencias (capturas reales)
 
@@ -228,7 +256,11 @@ Evidencias disponibles en `Evidencias/`:
 - `Evidencias/Ingest Bronze 2.png`
 - `Evidencias/Ingest Bronze 3.png`
 - `Evidencias/DBT After Ingest.png` (cadena dbt ejecutada)
+- `Evidencias/Trigger ingest monthly.png` (trigger semanal de ingest)
+- `Evidencias/Trigger dbt after ingest.png` (trigger semanal de cadena dbt)
 - `Evidencias/DBT Test Final PASS.png` (PASS=44, ERROR=0)
+- `Evidencias/DBT Build Gold fct_trips.png` (ejecucion exitosa de fct_trips en gold)
+- `Evidencias/DBT Build Gold finished.png` (finalizacion de dbt_build_gold)
 - `Evidencias/Partition Strategy Gold.png` (RANGE/HASH/LIST)
 - `Evidencias/Partition Keys Gold.png` (keys de particion)
 - `Evidencias/Partition Children Gold.png` (particiones hijas)
@@ -243,3 +275,14 @@ Resumen validado con evidencia:
 - Particionamiento: estrategias y claves correctas en tablas gold.
 - Pruning: evidenciado en hechos (`fct_trips_2024_03`) y dimension hash (`dim_zone_p3`).
 - Cobertura: `loaded=94`, `missing=2`; `row_count` real por mes/servicio.
+
+Verificacion de completitud de evidencias:
+
+- Triggers: OK (`Trigger ingest monthly`, `Trigger dbt after ingest`).
+- Secrets: OK (`Mage Secrets`).
+- Ingesta: OK (`Ingest Bronze*`).
+- Cadena dbt: OK (`DBT After Ingest`).
+- Calidad final: OK (`DBT Test Final PASS`).
+- Particionamiento: OK (`Partition Strategy/Keys/Children Gold`).
+- Pruning: OK (`Explain Pruning FCT Trips`, `Explain Pruning Dim Zone`).
+- Cobertura: OK (`Coverage Status Summary`, `Coverage Detail`).

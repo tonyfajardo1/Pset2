@@ -11,12 +11,14 @@ def get_postgres_credentials():
         'host': os.getenv('POSTGRES_HOST', 'postgres'),
         'port': int(os.getenv('POSTGRES_PORT', 5432)),
         'db': os.getenv('POSTGRES_DB', 'nyc_trips'),
-        'user': os.getenv('POSTGRES_USER', 'postgres'),
-        'password': os.getenv('POSTGRES_PASSWORD', 'postgres')
+        'user': os.getenv('POSTGRES_USER'),
+        'password': os.getenv('POSTGRES_PASSWORD')
     }
 
 def get_postgres_engine():
     creds = get_postgres_credentials()
+    if not creds['user'] or not creds['password']:
+        raise ValueError('POSTGRES_USER y POSTGRES_PASSWORD deben definirse en entorno/Mage Secrets.')
     conn_str = f"postgresql://{creds['user']}:{creds['password']}@{creds['host']}:{creds['port']}/{creds['db']}"
     return create_engine(conn_str, pool_pre_ping=True)
 

@@ -3,7 +3,7 @@ blocks:
   color: yellow
   configuration: {}
   downstream_blocks:
-  - dim_payment_type
+  - dim_date
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -15,7 +15,70 @@ blocks:
   type: custom
   upstream_blocks: []
   uuid: create_partitions
-- all_upstream_blocks_executed: true
+- all_upstream_blocks_executed: false
+  color: gold
+  configuration:
+    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profile_target: dev
+    file_path: models/gold/dim_date.sql
+  downstream_blocks:
+  - dim_zone
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dim_date
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - create_partitions
+  uuid: dim_date
+- all_upstream_blocks_executed: false
+  color: gold
+  configuration:
+    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profile_target: dev
+    file_path: models/gold/dim_zone.sql
+  downstream_blocks:
+  - dim_service_type
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dim_zone
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dim_date
+  uuid: dim_zone
+- all_upstream_blocks_executed: false
+  color: gold
+  configuration:
+    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profile_target: dev
+    file_path: models/gold/dim_service_type.sql
+  downstream_blocks:
+  - dim_payment_type
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dim_service_type
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dim_zone
+  uuid: dim_service_type
+- all_upstream_blocks_executed: false
   color: gold
   configuration:
     dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
@@ -23,7 +86,7 @@ blocks:
     dbt_profile_target: dev
     file_path: models/gold/dim_payment_type.sql
   downstream_blocks:
-  - dim_rate_code
+  - dim_vendor
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -34,8 +97,29 @@ blocks:
   timeout: null
   type: dbt
   upstream_blocks:
-  - create_partitions
+  - dim_service_type
   uuid: dim_payment_type
+- all_upstream_blocks_executed: false
+  color: gold
+  configuration:
+    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
+    dbt_profile_target: dev
+    file_path: models/gold/dim_vendor.sql
+  downstream_blocks:
+  - dim_rate_code
+  executor_config: null
+  executor_type: local_python
+  has_callback: false
+  language: sql
+  name: dim_vendor
+  retry_config: null
+  status: not_executed
+  timeout: null
+  type: dbt
+  upstream_blocks:
+  - dim_payment_type
+  uuid: dim_vendor
 - all_upstream_blocks_executed: false
   color: gold
   configuration:
@@ -44,7 +128,7 @@ blocks:
     dbt_profile_target: dev
     file_path: models/gold/dim_rate_code.sql
   downstream_blocks:
-  - gold_daily_revenue
+  - fct_trips
   executor_config: null
   executor_type: local_python
   has_callback: false
@@ -55,7 +139,7 @@ blocks:
   timeout: null
   type: dbt
   upstream_blocks:
-  - dim_payment_type
+  - dim_vendor
   uuid: dim_rate_code
 - all_upstream_blocks_executed: false
   color: gold
@@ -63,90 +147,27 @@ blocks:
     dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
     dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
     dbt_profile_target: dev
-    file_path: models/gold/gold_daily_revenue.sql
-  downstream_blocks:
-  - gold_hourly_patterns
+    file_path: models/gold/fct_trips.sql
+  downstream_blocks: []
   executor_config: null
   executor_type: local_python
   has_callback: false
   language: sql
-  name: gold_daily_revenue
+  name: fct_trips
   retry_config: null
   status: not_executed
   timeout: null
   type: dbt
   upstream_blocks:
   - dim_rate_code
-  uuid: gold_daily_revenue
-- all_upstream_blocks_executed: false
-  color: gold
-  configuration:
-    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
-    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
-    dbt_profile_target: dev
-    file_path: models/gold/gold_hourly_patterns.sql
-  downstream_blocks:
-  - gold_zone_analytics
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: sql
-  name: gold_hourly_patterns
-  retry_config: null
-  status: not_executed
-  timeout: null
-  type: dbt
-  upstream_blocks:
-  - gold_daily_revenue
-  uuid: gold_hourly_patterns
-- all_upstream_blocks_executed: false
-  color: gold
-  configuration:
-    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
-    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
-    dbt_profile_target: dev
-    file_path: models/gold/gold_zone_analytics.sql
-  downstream_blocks:
-  - gold_monthly_summary
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: sql
-  name: gold_zone_analytics
-  retry_config: null
-  status: not_executed
-  timeout: null
-  type: dbt
-  upstream_blocks:
-  - gold_hourly_patterns
-  uuid: gold_zone_analytics
-- all_upstream_blocks_executed: false
-  color: gold
-  configuration:
-    dbt_project_path: /home/src/nyc_trips_pipeline/dbt_project
-    dbt_profiles_dir: /home/src/nyc_trips_pipeline/dbt_project
-    dbt_profile_target: dev
-    file_path: models/gold/gold_monthly_summary.sql
-  downstream_blocks: []
-  executor_config: null
-  executor_type: local_python
-  has_callback: false
-  language: sql
-  name: gold_monthly_summary
-  retry_config: null
-  status: not_executed
-  timeout: null
-  type: dbt
-  upstream_blocks:
-  - gold_zone_analytics
-  uuid: gold_monthly_summary
+  uuid: fct_trips
 cache_block_output_in_memory: false
 callbacks: []
 concurrency_config: {}
 conditionals: []
 created_at: '2026-02-26 09:00:00.000000+00:00'
 data_integration: null
-description: 'Pipeline DBT Gold - crea particiones y ejecuta modelos gold'
+description: 'Pipeline DBT Gold - esquema estrella requerido por el PDF (sin agregados opcionales)'
 executor_config: {}
 executor_count: 1
 executor_type: null

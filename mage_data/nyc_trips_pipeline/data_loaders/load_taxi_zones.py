@@ -17,8 +17,10 @@ def get_postgres_engine():
     host = get_secret_value('POSTGRES_HOST') or os.getenv('POSTGRES_HOST', 'postgres')
     port = int(get_secret_value('POSTGRES_PORT') or os.getenv('POSTGRES_PORT', 5432))
     db = get_secret_value('POSTGRES_DB') or os.getenv('POSTGRES_DB', 'nyc_trips')
-    user = get_secret_value('POSTGRES_USER') or os.getenv('POSTGRES_USER', 'postgres')
-    password = get_secret_value('POSTGRES_PASSWORD') or os.getenv('POSTGRES_PASSWORD', 'postgres')
+    user = get_secret_value('POSTGRES_USER') or os.getenv('POSTGRES_USER')
+    password = get_secret_value('POSTGRES_PASSWORD') or os.getenv('POSTGRES_PASSWORD')
+    if not user or not password:
+        raise ValueError('POSTGRES_USER y POSTGRES_PASSWORD deben venir de Mage Secrets o variables de entorno.')
     conn_str = f"postgresql://{user}:{password}@{host}:{port}/{db}"
     return create_engine(conn_str, pool_pre_ping=True)
 
