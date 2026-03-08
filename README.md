@@ -101,10 +101,10 @@ Resultado observado:
 
 Evidencias:
 
-- `Evidencias/Ingest Bronze Pipelines.png`
-- `Evidencias/DBT After Ingest.png`
-- `Evidencias/Trigger ingest monthly.png`
-- `Evidencias/Trigger dbt after ingest.png`
+- ![Ingest Bronze Pipelines](Evidencias/Ingest%20Bronze%20Pipelines.png)
+- ![DBT After Ingest](Evidencias/DBT%20After%20Ingest.png)
+- ![Trigger ingest monthly](Evidencias/Trigger%20ingest%20monthly.png)
+- ![Trigger dbt after ingest](Evidencias/Trigger%20dbt%20after%20ingest.png)
 
 ## 6. Gestion de secretos
 
@@ -205,7 +205,7 @@ Resultado final de calidad (evidencia real):
 
 Captura:
 
-- `Evidencias/DBT Test Final PASS.png`
+- ![DBT Test Final PASS](Evidencias/DBT%20Test%20Final%20PASS.png)
 
 Resultado observado:
 
@@ -250,24 +250,24 @@ Resultado observado:
 
 Evidencias disponibles en `Evidencias/`:
 
-- `Evidencias/Mage Secrets.png` (secrets configurados)
-- `Evidencias/Ingest Bronze Pipelines.png` (pipeline y/o corrida de ingest)
-- `Evidencias/Ingest Bronze.png`
-- `Evidencias/Ingest Bronze 2.png`
-- `Evidencias/Ingest Bronze 3.png`
-- `Evidencias/DBT After Ingest.png` (cadena dbt ejecutada)
-- `Evidencias/Trigger ingest monthly.png` (trigger semanal de ingest)
-- `Evidencias/Trigger dbt after ingest.png` (trigger semanal de cadena dbt)
-- `Evidencias/DBT Test Final PASS.png` (PASS=44, ERROR=0)
-- `Evidencias/DBT Build Gold fct_trips.png` (ejecucion exitosa de fct_trips en gold)
-- `Evidencias/DBT Build Gold finished.png` (finalizacion de dbt_build_gold)
-- `Evidencias/Partition Strategy Gold.png` (RANGE/HASH/LIST)
-- `Evidencias/Partition Keys Gold.png` (keys de particion)
-- `Evidencias/Partition Children Gold.png` (particiones hijas)
-- `Evidencias/Explain Pruning FCT Trips.png` (pruning por RANGE)
-- `Evidencias/Explain Pruning Dim Zone.png` (pruning por HASH)
-- `Evidencias/Coverage Status Summary.png` (loaded/missing)
-- `Evidencias/Coverage Detail.png` (detalle por mes/servicio)
+- ![Mage Secrets](Evidencias/Mage%20Secrets.png)
+- ![Ingest Bronze Pipelines](Evidencias/Ingest%20Bronze%20Pipelines.png)
+- ![Ingest Bronze](Evidencias/Ingest%20Bronze.png)
+- ![Ingest Bronze 2](Evidencias/Ingest%20Bronze%202.png)
+- ![Ingest Bronze 3](Evidencias/Ingest%20Bronze%203.png)
+- ![DBT After Ingest](Evidencias/DBT%20After%20Ingest.png)
+- ![Trigger ingest monthly](Evidencias/Trigger%20ingest%20monthly.png)
+- ![Trigger dbt after ingest](Evidencias/Trigger%20dbt%20after%20ingest.png)
+- ![DBT Test Final PASS](Evidencias/DBT%20Test%20Final%20PASS.png)
+- ![DBT Build Gold fct_trips](Evidencias/DBT%20Build%20Gold%20fct_trips.png)
+- ![DBT Build Gold finished](Evidencias/DBT%20Build%20Gold%20finished.png)
+- ![Partition Strategy Gold](Evidencias/Partition%20Strategy%20Gold.png)
+- ![Partition Keys Gold](Evidencias/Partition%20Keys%20Gold.png)
+- ![Partition Children Gold](Evidencias/Partition%20Children%20Gold.png)
+- ![Explain Pruning FCT Trips](Evidencias/Explain%20Pruning%20FCT%20Trips.png)
+- ![Explain Pruning Dim Zone](Evidencias/Explain%20Pruning%20Dim%20Zone.png)
+- ![Coverage Status Summary](Evidencias/Coverage%20Status%20Summary.png)
+- ![Coverage Detail](Evidencias/Coverage%20Detail.png)
 
 Resumen validado con evidencia:
 
