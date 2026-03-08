@@ -21,6 +21,7 @@ __pycache__/
 dbt_project/target/
 dbt_project/dbt_packages/
 dbt_project/logs/
+**/.user.yml
 
 # Mage
 mage_data/.file_versions/
@@ -30,6 +31,8 @@ mage_data/secrets/
 mage_data/mage_data/
 mage_data/nyc_trips_pipeline/dbt_project/target/
 mage_data/nyc_trips_pipeline/dbt_project/logs/
+mage_data/nyc_trips_pipeline/.profiles_interpolated_temp_*/
+mage_data/nyc_trips_pipeline/.ssh_tunnel/
 
 # Local assistant/tooling files
 .claude/
