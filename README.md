@@ -50,7 +50,7 @@ Mage quality_checks -> dbt test
 
 ### Esquema estrella (Gold)
 
-![Esquema Estrella Gold](Evidencias/Esquema%20Estrella%20Gold.png)
+![Esquema Estrella Gold](Evidencias/Esquema%20Estrella%20Gold%20v2.png)
 
 ```text
                     gold.dim_date
@@ -310,7 +310,7 @@ Evidencias disponibles en `Evidencias/`:
 - ![Explain Pruning Dim Zone](Evidencias/Explain%20Pruning%20Dim%20Zone.png)
 - ![Coverage Status Summary](Evidencias/Coverage%20Status%20Summary.png)
 - ![Coverage Detail](Evidencias/Coverage%20Detail.png)
-- ![Esquema Estrella Gold](Evidencias/Esquema%20Estrella%20Gold.png)
+- ![Esquema Estrella Gold](Evidencias/Esquema%20Estrella%20Gold%20v2.png)
 
 Resumen validado con evidencia:
 
