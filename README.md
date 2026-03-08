@@ -48,6 +48,48 @@ PostgreSQL gold schema (tables, star schema)
 Mage quality_checks -> dbt test
 ```
 
+### Esquema estrella (Gold)
+
+![Esquema Estrella Gold](Evidencias/Esquema%20Estrella%20Gold.png)
+
+```text
+                    gold.dim_date
+                         |
+                         | pickup_date_key
+                         |
+gold.dim_zone (PU) -- pu_zone_key
+                         |
+                         |
+gold.dim_service_type -- service_type
+                         |
+                         |
+gold.dim_payment_type -- payment_type_id
+                         |
+                         |
+gold.dim_vendor ---- vendor_id
+                         |
+                         |
+gold.dim_rate_code - ratecode_id
+                         |
+                         v
+                    gold.fct_trips
+                         ^
+                         |
+                   do_zone_key
+                         |
+                   gold.dim_zone (DO)
+```
+
+Llaves de relacion principales:
+
+- `fct_trips.pickup_date_key -> dim_date.date_key`
+- `fct_trips.pu_zone_key -> dim_zone.zone_key`
+- `fct_trips.do_zone_key -> dim_zone.zone_key`
+- `fct_trips.service_type -> dim_service_type.service_type`
+- `fct_trips.payment_type_id -> dim_payment_type.payment_type_id`
+- `fct_trips.vendor_id -> dim_vendor.vendor_id`
+- `fct_trips.ratecode_id -> dim_rate_code.rate_code_id`
+
 ## 2. Tabla de cobertura por mes y servicio
 
 La cobertura oficial se mantiene en `bronze.coverage` con las columnas requeridas:
@@ -268,6 +310,7 @@ Evidencias disponibles en `Evidencias/`:
 - ![Explain Pruning Dim Zone](Evidencias/Explain%20Pruning%20Dim%20Zone.png)
 - ![Coverage Status Summary](Evidencias/Coverage%20Status%20Summary.png)
 - ![Coverage Detail](Evidencias/Coverage%20Detail.png)
+- ![Esquema Estrella Gold](Evidencias/Esquema%20Estrella%20Gold.png)
 
 Resumen validado con evidencia:
 
